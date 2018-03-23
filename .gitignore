@@ -1,0 +1,26 @@
+
+### java compiled files ###
+*.class
+
+### OS Junk ###
+.DS_Store
+
+### IntelliJ ###
+.idea
+out
+*.iml
+
+*.jar
+*.original
+
+*/target/*
+
+### Gradle ###
+.gradle
+build
+
+node_modules/
+bin/
+obj/
+
+*.ser
