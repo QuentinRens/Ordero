@@ -9,8 +9,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.verification.VerificationMode;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+
 @RunWith(MockitoJUnitRunner.class)
 public class ItemServiceTest {
 
@@ -67,5 +71,28 @@ public class ItemServiceTest {
         Item actualItem = ItemService.updateItem(42, providedItem);
 
         Assertions.assertThat(actualItem).isEqualToComparingFieldByField(expectedItem);
+    }
+
+    @Test
+    public void getItemByName_HappyPath(){
+        List<Item> expectedItems = new ArrayList<>();
+        expectedItems.add(Item.ItemBuilder.item().withName("Georgi").build());
+        Mockito.when(itemRepository.getItems()).thenReturn(expectedItems);
+
+        ItemService.getItemByName("Georgi");
+
+        Mockito.verify(itemRepository).getItemByName("Georgi");
+    }
+
+    @Test
+    public void getItemNames_HappyPath(){
+        List<String> expectedList = new ArrayList<>();
+        expectedList.add("Georgi");
+
+        Mockito.when(itemRepository.getItemNames()).thenReturn(expectedList);
+
+        ItemService.getItemNames();
+
+        Mockito.calls(2);
     }
 }
