@@ -42,7 +42,6 @@ public class CustomerMapperTest {
     @Test
     public void toDomain_givenCustomerDto_thenMapAllFieldsToCustomer() {
         CustomerDto customerDto = CustomerDto.customerDto()
-                .withID(UUID.randomUUID())
                 .withFirstName("Quentin")
                 .withLastName("Rens")
                 .withEmail("rensquentin@hotmail.com")
@@ -54,7 +53,7 @@ public class CustomerMapperTest {
 
         Customer customer = customerMapper.toDomain(customerDto);
 
-        assertThat(customer).isEqualToComparingOnlyGivenFields(customerDto, "id", "firstName", "lastName", "email", "phoneNumber");
+        assertThat(customer).isEqualToComparingOnlyGivenFields(customerDto, "firstName", "lastName", "email", "phoneNumber");
         assertThat(customer.getCustomerAdress()).isEqualToComparingOnlyGivenFields(customerDto, "streetName", "streetNumber", "postalCode", "city");
     }
 }

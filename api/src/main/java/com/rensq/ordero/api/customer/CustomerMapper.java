@@ -23,7 +23,6 @@ public class CustomerMapper {
 
     Customer toDomain (CustomerDto customerDto){
         return Customer.CustomerBuilder.customer()
-                .withID(customerDto.getId())
                 .withFirstName(customerDto.getFirstName())
                 .withLastName(customerDto.getLastName())
                 .withEmail(customerDto.getEmail())
