@@ -1,6 +1,7 @@
 package com.rensq.ordero.api.item;
 
 import com.rensq.ordero.api.OrderoRunner;
+import com.rensq.ordero.domain.item.Item;
 import com.rensq.ordero.domain.item.ItemRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.Before;
@@ -24,7 +25,7 @@ public class ItemManagementControllerIntegrationTest {
     private ItemRepository itemRepository;
 
     @Before
-    public void clearRepository() {
+    public void initRepository() {
         itemRepository.clear();
     }
 
@@ -45,5 +46,29 @@ public class ItemManagementControllerIntegrationTest {
         Assertions.assertThat(itemDto.getDescription()).isEqualTo("A big toy");
         Assertions.assertThat(itemDto.getPrice()).isEqualByComparingTo(new BigDecimal(13));
         Assertions.assertThat(itemDto.getAmount()).isEqualTo(10);
+    }
+
+    @Test
+    public void updateItem() {
+        Item item = itemRepository.storeItem(Item.ItemBuilder.item()
+                .withName("Toytoytoy")
+                .withDescription("A big toy")
+                .withPrice(new BigDecimal(15))
+                .withAmount(10)
+                .build());
+
+        new TestRestTemplate().put(String.format("http://localhost:%s/%s/%s", port, "Item", 1),
+                        ItemDto.itemDto()
+                                .withName("Toy")
+                                .withPrice(new BigDecimal(13))
+                                .withAmount(10)
+                        , ItemDto.class);
+
+        Assertions.assertThat(itemRepository.getItem(1)).isEqualToComparingFieldByField(ItemDto.itemDto()
+                .withID(1)
+                .withName("Toy")
+                .withDescription("A big toy")
+                .withPrice(new BigDecimal(13))
+                .withAmount(10));
     }
 }

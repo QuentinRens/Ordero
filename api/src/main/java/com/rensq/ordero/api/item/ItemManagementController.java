@@ -25,4 +25,12 @@ public class ItemManagementController {
     public ItemDto addItem(@RequestBody ItemDto itemDto) {
        return itemMapper.toDto(itemService.createItem(itemMapper.toDomain(itemDto)));
     }
+
+
+    @PutMapping (path = "/{id}", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
+    @ResponseStatus
+    public ItemDto updateItem (@PathVariable Integer id, @RequestBody ItemDto itemDto){
+        return itemMapper.toDto (itemService.updateItem(id, itemMapper.toDomain(itemDto)));
+    }
+
 }
