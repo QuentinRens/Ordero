@@ -49,7 +49,7 @@ public class Order {
             return this;
         }
 
-        public OrderBuilder withItemGroups(){
+        public OrderBuilder withItemGroups(List <ItemGroup> itemGroups){
             this.itemGroups = itemGroups;
             return this;
         }

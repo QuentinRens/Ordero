@@ -71,14 +71,14 @@ public class OrderService {
     }
 
     private void assertItemGroupIsNotEmpty(Order order) {
-        if (order.getItemGroups().isEmpty()){
+        if (order.getItemGroups().isEmpty() || order.getItemGroups() == null){
             throw new EmptyRequestException(ItemGroup.class.getSimpleName(), CrudAction.CREATE );
         }
     }
 
     private void setShippingDatesForItems(Order order) {
         for (ItemGroup itemGroup :order.getItemGroups())
-            if (itemGroup.getAmount() >=1){
+            if (itemService.getItemByName(itemGroup.getName()).getAmount() >=1){
                 itemGroup.setShippingDate(LocalDate.now().plusDays(1));
             }else{
                 itemGroup.setShippingDate(LocalDate.now().plusWeeks(1));
