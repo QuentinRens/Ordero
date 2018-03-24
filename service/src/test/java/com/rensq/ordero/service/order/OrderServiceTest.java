@@ -81,7 +81,7 @@ public class OrderServiceTest {
 
         Mockito.when(orderRepository.getOrderByCustomerId(customerID)).thenReturn(orders);
 
-        OrderReport actualReport = orderService.getOrderReport(customerID);
+        OrderReport actualReport = orderService.getOrderReport(customerID.toString());
 
         Assertions.assertThat(actualReport.getOrders().keySet()).containsExactly(1,2,3);
         Assertions.assertThat(actualReport.getOrders().values()).containsExactly (order1, order2, order3);

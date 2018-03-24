@@ -23,9 +23,9 @@ public class OrderReportController {
         this.orderReportMapper = orderReportMapper;
     }
 
-    @PostMapping (consumes = APPLICATION_JSON_VALUE, produces =APPLICATION_JSON_VALUE )
+    @GetMapping (path = "/{id}", produces =APPLICATION_JSON_VALUE )
     @ResponseStatus(HttpStatus.OK)
-    public OrderReportDto getOrderReport (@RequestBody  UUID customerID){
+    public OrderReportDto getOrderReport (@PathVariable("id") String customerID){
         return orderReportMapper.toDto(orderService.getOrderReport(customerID));
     }
 }

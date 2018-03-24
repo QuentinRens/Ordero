@@ -58,7 +58,7 @@ public class OrderReportControllerIntegrationTest {
         orderRepository.storeOrder(order3);
 
         OrderReportDto orderReportDto = new TestRestTemplate()
-                .postForObject(String.format("http://localhost:%s/%s", port, "order_report"), storedCustomer.getId(),
+                .getForObject(String.format("http://localhost:%s/%s/%s", port, "order_report", storedCustomer.getId().toString()) ,
                         OrderReportDto.class);
 
         Assertions.assertThat(orderReportDto.getTotalPrice().intValue()).isEqualTo(3);

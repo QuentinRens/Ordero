@@ -46,17 +46,17 @@ public class OrderService {
         return orderRepository.storeOrder(order);
     }
 
-    public OrderReport getOrderReport(UUID customerId){
+    public OrderReport getOrderReport(String customerId){
         assertOrdersExistForCustomerId(customerId);
-        List<Order> ordersForCustomer = orderRepository.getOrderByCustomerId(customerId);
+        List<Order> ordersForCustomer = orderRepository.getOrderByCustomerId(UUID.fromString(customerId));
         return OrderReport.OrderReportBuilder.orderReport()
                 .withOrders(ordersForCustomer)
                 .withTotalPrice(ordersForCustomer)
                 .build();
     }
 
-    private void assertOrdersExistForCustomerId(UUID customerId) {
-        if (orderRepository.getOrderByCustomerId(customerId).isEmpty()){
+    private void assertOrdersExistForCustomerId(String customerId) {
+        if (orderRepository.getOrderByCustomerId(UUID.fromString(customerId)).isEmpty()){
             throw new UnknownResourceException("Customer ID", Order.class.getSimpleName());
         }
     }
