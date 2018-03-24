@@ -26,7 +26,7 @@ public class CustomerService {
         return customerRepository.getCustomer(customerID);
     }
 
-    private void assertCustomerExist(UUID customerID) {
+    public void assertCustomerExist(UUID customerID) {
         if (customerRepository.getCustomer(customerID) == null){
             throw new UnknownResourceException("ID", Customer.class.getSimpleName());
         }

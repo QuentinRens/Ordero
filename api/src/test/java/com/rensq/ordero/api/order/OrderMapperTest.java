@@ -53,12 +53,13 @@ public class OrderMapperTest {
         itemGroups.add(itemGroup1);
         itemGroups.add(itemGroup2);
 
-        Order givenOrder = Order.OrderBuilder.order().withId(1).withItemGroups(itemGroups).withCustomerId(UUID.randomUUID()).build();
+        Order givenOrder = Order.OrderBuilder.order().withId(1).withItemGroups(itemGroups).withCustomerId(UUID.randomUUID()).withPrice(new BigDecimal(20)).build();
 
         OrderDto orderDto = orderMapper.toDto(givenOrder);
 
         Assertions.assertThat(orderDto.getItemGroupDtos().get(0)).isEqualToIgnoringGivenFields(itemGroup1, "shippingDate", "price");
         Assertions.assertThat(orderDto.getItemGroupDtos().get(1)).isEqualToIgnoringGivenFields(itemGroup2, "shippingDate", "price");
+        Assertions.assertThat(orderDto.getPrice().intValue()).isEqualTo(20);
     }
 
     @Test

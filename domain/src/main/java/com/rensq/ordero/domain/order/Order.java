@@ -3,6 +3,7 @@ package com.rensq.ordero.domain.order;
 
 import com.rensq.ordero.domain.item.ItemGroup;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
@@ -10,6 +11,7 @@ public class Order {
     private Integer id;
     private List<ItemGroup> itemGroups;
     private UUID customerId;
+    private BigDecimal price;
 
     private Order(){}
 
@@ -25,6 +27,10 @@ public class Order {
         return customerId;
     }
 
+    public BigDecimal getPrice() {
+        return price;
+    }
+
     public void setId(Integer id) {
         this.id = id;
     }
@@ -37,10 +43,15 @@ public class Order {
         this.customerId = customerId;
     }
 
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
+
     public static class OrderBuilder{
         private Integer id;
         private List<ItemGroup> itemGroups;
         private UUID customerId;
+        private BigDecimal price;
 
 
         private OrderBuilder(){}
@@ -54,6 +65,7 @@ public class Order {
             order.setId(id);
             order.setItemGroups(itemGroups);
             order.setCustomerId(customerId);
+            order.setPrice(price);
             return order;
         }
 
@@ -69,6 +81,11 @@ public class Order {
 
         public OrderBuilder withCustomerId (UUID customerId){
             this.customerId = customerId;
+            return this;
+        }
+
+        public OrderBuilder withPrice (BigDecimal price){
+            this.price = price;
             return this;
         }
     }

@@ -1,8 +1,8 @@
 package com.rensq.ordero.domain.order;
 
 import javax.inject.Named;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Named
 public class OrderRepository {
@@ -15,6 +15,12 @@ public class OrderRepository {
 
     public Order getOrder (int id){
         return orders.get(id);
+    }
+
+    public List <Order> getOrderByCustomerId (UUID customerId){
+        return orders.values().stream()
+                .filter(order -> order.getCustomerId().equals(customerId))
+                .collect(Collectors.toList());
     }
 
     public Order storeOrder(Order order){

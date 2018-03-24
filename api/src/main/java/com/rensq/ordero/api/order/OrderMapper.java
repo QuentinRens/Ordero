@@ -24,7 +24,7 @@ public class OrderMapper {
         List<ItemGroupDto> itemGroupDtos = order.getItemGroups().stream()
                 .map(itemGroup -> itemGroupMapper.toDto(itemGroup))
                 .collect(Collectors.toList());
-        return OrderDto.orderDto().withId(order.getId()).withItemGroup(itemGroupDtos).withCustomerID(order.getCustomerId());
+        return OrderDto.orderDto().withId(order.getId()).withItemGroup(itemGroupDtos).withCustomerID(order.getCustomerId()).withPrice(order.getPrice().intValue());
     }
 
     Order toDomain (OrderDto orderDto){

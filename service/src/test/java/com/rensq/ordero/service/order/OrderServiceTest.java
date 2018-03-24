@@ -4,6 +4,7 @@ import com.rensq.ordero.domain.customer.Customer;
 import com.rensq.ordero.domain.item.Item;
 import com.rensq.ordero.domain.item.ItemGroup;
 import com.rensq.ordero.domain.order.Order;
+import com.rensq.ordero.domain.order.OrderReport;
 import com.rensq.ordero.domain.order.OrderRepository;
 import com.rensq.ordero.service.customer.CustomerService;
 import com.rensq.ordero.service.item.ItemService;
@@ -62,5 +63,30 @@ public class OrderServiceTest {
         Assertions.assertThat(actualOrder.getItemGroups().get(1).getPrice()).isPositive();
         Assertions.assertThat(actualOrder.getItemGroups().get(1).getShippingDate()).isBetween(LocalDate.now(), LocalDate.now().plusDays(2));
         Assertions.assertThat(actualOrder.getCustomerId()).isEqualTo(givenCustomerID);
+        Assertions.assertThat(actualOrder.getPrice().intValue()).isEqualTo(7);
+    }
+
+    @Test
+    public void getOrderReport_HappyPath(){
+        UUID customerID = UUID.randomUUID();
+
+        Order order1 = Order.OrderBuilder.order().withCustomerId(customerID).withId(1).withPrice(new BigDecimal(1)).build();
+        Order order2 = Order.OrderBuilder.order().withCustomerId(customerID).withId(2).withPrice(new BigDecimal(1)).build();
+        Order order3 = Order.OrderBuilder.order().withCustomerId(customerID).withId(3).withPrice(new BigDecimal(1)).build();
+
+        List <Order> orders = new ArrayList<>();
+        orders.add(order1);
+        orders.add(order2);
+        orders.add(order3);
+
+        Mockito.when(orderRepository.getOrderByCustomerId(customerID)).thenReturn(orders);
+
+        OrderReport actualReport = orderService.getOrderReport(customerID);
+
+        Assertions.assertThat(actualReport.getOrders().keySet()).containsExactly(1,2,3);
+        Assertions.assertThat(actualReport.getOrders().values()).containsExactly (order1, order2, order3);
+        Assertions.assertThat(actualReport.getTotalPrice().intValue()).isEqualTo(3);
+
+
     }
 }

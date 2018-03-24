@@ -11,6 +11,7 @@ public class OrderDto {
     private Integer id;
     private List<ItemGroupDto> itemGroupDtos ;
     private UUID customerID;
+    private Integer price;
 
     private OrderDto(){}
 
@@ -33,6 +34,11 @@ public class OrderDto {
         return this;
     }
 
+    public OrderDto withPrice (Integer price){
+        this.price = price;
+        return this;
+    }
+
     public Integer getId() {
         return id;
     }
@@ -43,5 +49,9 @@ public class OrderDto {
 
     public UUID getCustomerID() {
         return customerID;
+    }
+
+    public Integer getPrice() {
+        return price;
     }
 }

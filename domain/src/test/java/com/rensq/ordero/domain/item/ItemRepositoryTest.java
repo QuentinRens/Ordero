@@ -10,7 +10,7 @@ public class ItemRepositoryTest {
     private ItemRepository itemRepository;
 
     @Before
-    public void instantiateMapper() {
+    public void instantiateRepository() {
         itemRepository = new ItemRepository();
     }
 

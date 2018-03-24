@@ -63,6 +63,7 @@ public class OrderCreationControllerIntegrationTest {
 
         Assertions.assertThat(actualOrderDto.getId()).isEqualTo(1);
         Assertions.assertThat(actualOrderDto.getCustomerID()).isEqualTo(storedCustomer.getId());
+        Assertions.assertThat(actualOrderDto.getPrice()).isPositive();
         Assertions.assertThat(actualOrderDto.getItemGroupDtos().size()).isEqualTo(2);
         Assertions.assertThat(actualOrderDto.getItemGroupDtos().get(0)).isEqualToIgnoringGivenFields(itemGroupDto1,"price", "shippingDate");
         Assertions.assertThat(actualOrderDto.getItemGroupDtos().get(1)).isEqualToIgnoringGivenFields(itemGroupDto2,"price", "shippingDate");
