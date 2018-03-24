@@ -47,4 +47,15 @@ public class CustomerServiceTest {
 
         Assertions.assertThat(actualCustomer).isEqualToComparingFieldByField(expectedCustomer);
     }
+
+    @Test
+    public void getCustomer_HappyPath() {
+        UUID givenID = UUID.randomUUID();
+        Customer expectedCustomer = Customer.CustomerBuilder.customer().withID(givenID).build();
+        Mockito.when(CustomerRepository.getCustomer(givenID)).thenReturn(expectedCustomer);
+
+        CustomerService.getCustomer(givenID);
+
+        Mockito.calls(2);
+    }
 }

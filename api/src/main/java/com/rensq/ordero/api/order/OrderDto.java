@@ -5,14 +5,12 @@ import com.rensq.ordero.api.item.ItemGroupDto;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class OrderDto {
     private Integer id;
     private List<ItemGroupDto> itemGroupDtos ;
-
-    public Integer getId() {
-        return id;
-    }
+    private UUID customerID;
 
     private OrderDto(){}
 
@@ -30,7 +28,20 @@ public class OrderDto {
         return this;
     }
 
+    public OrderDto withCustomerID (UUID customerID){
+        this.customerID = customerID;
+        return this;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
     public List<ItemGroupDto> getItemGroupDtos() {
         return itemGroupDtos;
+    }
+
+    public UUID getCustomerID() {
+        return customerID;
     }
 }

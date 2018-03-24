@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
 
+import java.util.UUID;
+
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
@@ -24,6 +26,7 @@ public class OrderCreationController {
     @PostMapping (consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     @ResponseStatus (HttpStatus.CREATED)
     public OrderDto makeOrder(@RequestBody OrderDto orderDto){
-        return orderMapper.toDto(orderService.createOrder(orderMapper.toDomain(orderDto)));
+        System.out.println(orderDto.getCustomerID());
+        return orderMapper.toDto(orderService.createOrder(orderMapper.toDomain(orderDto), orderDto.getCustomerID()));
     }
 }

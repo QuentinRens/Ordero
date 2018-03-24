@@ -18,4 +18,8 @@ public class CustomerRepository {
         customers.put(customer.getId(), customer);
         return customer;
     }
+
+    public Customer getCustomer (UUID id){
+        return customers.get(id);
+    }
 }

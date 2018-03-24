@@ -4,6 +4,7 @@ import com.rensq.ordero.domain.item.Item;
 import com.rensq.ordero.domain.item.ItemGroup;
 import com.rensq.ordero.domain.order.Order;
 import com.rensq.ordero.domain.order.OrderRepository;
+import com.rensq.ordero.service.customer.CustomerService;
 import com.rensq.ordero.service.exceptions.EmptyFieldException;
 import com.rensq.ordero.service.exceptions.EmptyRequestException;
 import com.rensq.ordero.service.exceptions.EmptyRequestException.CrudAction;
@@ -15,26 +16,30 @@ import javax.inject.Named;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Named
 public class OrderService {
     private OrderRepository orderRepository;
     private ItemService itemService;
+    private CustomerService customerService;
 
     @Inject
-    public OrderService(OrderRepository orderRepository, ItemService itemService) {
+    public OrderService(OrderRepository orderRepository, ItemService itemService, CustomerService customerService) {
         this.orderRepository = orderRepository;
         this.itemService = itemService;
+        this.customerService = customerService;
     }
 
-    public Order createOrder(Order order){
+    public Order createOrder(Order order, UUID customerId){
         assertItemGroupIsNotEmpty(order);
         assertItemGroupsHaveName(order);
         assertNoAmountIsNull(order);
         assertGroupsReferToExistingItems(order);
         setShippingDatesForItems(order);
         setPricesForItemGroups(order);
+        order.setCustomerId(customerService.getCustomer(customerId).getId());
         return orderRepository.storeOrder(order);
     }
 

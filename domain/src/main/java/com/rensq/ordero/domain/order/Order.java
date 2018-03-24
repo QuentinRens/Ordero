@@ -1,13 +1,15 @@
 package com.rensq.ordero.domain.order;
 
+
 import com.rensq.ordero.domain.item.ItemGroup;
 
 import java.util.List;
+import java.util.UUID;
 
 public class Order {
     private Integer id;
     private List<ItemGroup> itemGroups;
-
+    private UUID customerId;
 
     private Order(){}
 
@@ -19,6 +21,10 @@ public class Order {
         return itemGroups;
     }
 
+    public UUID getCustomerId() {
+        return customerId;
+    }
+
     public void setId(Integer id) {
         this.id = id;
     }
@@ -27,9 +33,15 @@ public class Order {
         this.itemGroups = itemGroups;
     }
 
+    public void setCustomerId(UUID customerId) {
+        this.customerId = customerId;
+    }
+
     public static class OrderBuilder{
         private Integer id;
         private List<ItemGroup> itemGroups;
+        private UUID customerId;
+
 
         private OrderBuilder(){}
 
@@ -41,6 +53,7 @@ public class Order {
             Order order = new Order();
             order.setId(id);
             order.setItemGroups(itemGroups);
+            order.setCustomerId(customerId);
             return order;
         }
 
@@ -51,6 +64,11 @@ public class Order {
 
         public OrderBuilder withItemGroups(List <ItemGroup> itemGroups){
             this.itemGroups = itemGroups;
+            return this;
+        }
+
+        public OrderBuilder withCustomerId (UUID customerId){
+            this.customerId = customerId;
             return this;
         }
     }

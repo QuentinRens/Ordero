@@ -2,6 +2,7 @@ package com.rensq.ordero.api.order;
 
 import com.rensq.ordero.api.item.ItemGroupDto;
 import com.rensq.ordero.api.item.ItemGroupMapper;
+import com.rensq.ordero.domain.customer.Customer;
 import com.rensq.ordero.domain.item.ItemGroup;
 import com.rensq.ordero.domain.order.Order;
 
@@ -23,7 +24,7 @@ public class OrderMapper {
         List<ItemGroupDto> itemGroupDtos = order.getItemGroups().stream()
                 .map(itemGroup -> itemGroupMapper.toDto(itemGroup))
                 .collect(Collectors.toList());
-        return OrderDto.orderDto().withId(order.getId()).withItemGroup(itemGroupDtos);
+        return OrderDto.orderDto().withId(order.getId()).withItemGroup(itemGroupDtos).withCustomerID(order.getCustomerId());
     }
 
     Order toDomain (OrderDto orderDto){
@@ -31,6 +32,9 @@ public class OrderMapper {
                 .map(itemGroupDto -> itemGroupMapper.toDomain(itemGroupDto))
                 .collect(Collectors.toList());
 
-        return Order.OrderBuilder.order().withItemGroups(itemGroups).build();
+        return Order.OrderBuilder.order()
+                .withItemGroups(itemGroups)
+                .withCustomerId(orderDto.getCustomerID())
+                .build();
     }
 }
