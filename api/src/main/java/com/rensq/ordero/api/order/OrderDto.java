@@ -10,6 +10,9 @@ public class OrderDto {
     private Integer id;
     private List<ItemGroupDto> itemGroupDtos ;
 
+    public Integer getId() {
+        return id;
+    }
 
     private OrderDto(){}
 
