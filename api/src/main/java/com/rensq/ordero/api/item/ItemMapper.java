@@ -9,7 +9,7 @@ public class ItemMapper {
 
     ItemDto toDto (Item item){
         return ItemDto.itemDto()
-                .withID(item.getId())
+                .withID(item.getId().toString())
                 .withName(item.getName())
                 .withDescription(item.getDescription())
                 .withPrice(item.getPrice())

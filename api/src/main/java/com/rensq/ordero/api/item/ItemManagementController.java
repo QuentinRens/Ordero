@@ -29,7 +29,7 @@ public class ItemManagementController {
 
     @PutMapping (path = "/{id}", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     @ResponseStatus
-    public ItemDto updateItem (@PathVariable Integer id, @RequestBody ItemDto itemDto){
+    public ItemDto updateItem (@PathVariable String id, @RequestBody ItemDto itemDto){
         return itemMapper.toDto (itemService.updateItem(id, itemMapper.toDomain(itemDto)));
     }
 

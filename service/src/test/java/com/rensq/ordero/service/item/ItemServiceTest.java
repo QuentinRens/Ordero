@@ -14,6 +14,7 @@ import org.mockito.verification.VerificationMode;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ItemServiceTest {
@@ -34,7 +35,7 @@ public class ItemServiceTest {
                 .build();
 
         Item expectedItem = Item.ItemBuilder.item()
-                .withID(1)
+                .withID(UUID.randomUUID())
                 .withName(providedItem.getName())
                 .withDescription(providedItem.getDescription())
                 .withPrice(providedItem.getPrice())
@@ -57,18 +58,22 @@ public class ItemServiceTest {
                 .withAmount(10)
                 .build();
 
+        String givenID = UUID.randomUUID().toString();
+        UUID expectedID = UUID.fromString(givenID);
+
+
         Item expectedItem = Item.ItemBuilder.item()
-                .withID(42)
+                .withID(expectedID)
                 .withName(providedItem.getName())
                 .withDescription(providedItem.getDescription())
                 .withPrice(providedItem.getPrice())
                 .withAmount(providedItem.getAmount())
                 .build();
 
-        Mockito.when(itemRepository.getItem(42)).thenReturn(Item.ItemBuilder.item().withID(42).build());
+        Mockito.when(itemRepository.getItem(expectedID)).thenReturn(Item.ItemBuilder.item().withID(expectedID).build());
         Mockito.when(itemRepository.updateItem(providedItem)).thenReturn(expectedItem);
 
-        Item actualItem = ItemService.updateItem(42, providedItem);
+        Item actualItem = ItemService.updateItem(givenID, providedItem);
 
         Assertions.assertThat(actualItem).isEqualToComparingFieldByField(expectedItem);
     }

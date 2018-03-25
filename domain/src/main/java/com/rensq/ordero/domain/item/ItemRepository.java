@@ -6,14 +6,13 @@ import java.util.stream.Collectors;
 
 @Named
 public class ItemRepository {
-    private Map<Integer, Item> items;
-    private static int databaseIndex = 0;
+    private Map<UUID, Item> items;
 
     public ItemRepository(){
         this.items = new HashMap<>();
     }
 
-    public Item getItem (int id){
+    public Item getItem (UUID id){
         return items.get(id);
     }
 
@@ -34,7 +33,7 @@ public class ItemRepository {
     }
 
     public Item storeItem(Item item){
-        item.setId(++databaseIndex);
+        item.setId(UUID.randomUUID());
         items.put(item.getId(), item);
         return item;
     }
@@ -46,7 +45,6 @@ public class ItemRepository {
 
     public void clear(){
         items.clear();
-        databaseIndex = 0;
     }
 
     public boolean isEmpty(){

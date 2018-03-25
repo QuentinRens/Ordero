@@ -14,6 +14,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.inject.Inject;
 import java.math.BigDecimal;
+import java.util.UUID;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = OrderoRunner.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -41,7 +42,7 @@ public class ItemManagementControllerIntegrationTest {
                         ,
                         ItemDto.class);
 
-        Assertions.assertThat(itemDto.getId()).isEqualTo(1);
+        Assertions.assertThat(itemDto.getId()).isNotNull();
         Assertions.assertThat(itemDto.getName()).isEqualTo("Toy");
         Assertions.assertThat(itemDto.getDescription()).isEqualTo("A big toy");
         Assertions.assertThat(itemDto.getPrice()).isEqualByComparingTo(new BigDecimal(13));
@@ -57,18 +58,17 @@ public class ItemManagementControllerIntegrationTest {
                 .withAmount(10)
                 .build());
 
-        new TestRestTemplate().put(String.format("http://localhost:%s/%s/%s", port, "Item", 1),
+        new TestRestTemplate().put(String.format("http://localhost:%s/%s/%s", port, "Item", item.getId().toString()),
                         ItemDto.itemDto()
                                 .withName("Toy")
                                 .withPrice(new BigDecimal(13))
                                 .withAmount(10)
                         , ItemDto.class);
 
-        Assertions.assertThat(itemRepository.getItem(1)).isEqualToComparingFieldByField(ItemDto.itemDto()
-                .withID(1)
+        Assertions.assertThat(itemRepository.getItem(item.getId())).isEqualToIgnoringGivenFields(ItemDto.itemDto()
                 .withName("Toy")
                 .withDescription("A big toy")
                 .withPrice(new BigDecimal(13))
-                .withAmount(10));
+                .withAmount(10), "id");
     }
 }

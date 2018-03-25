@@ -3,7 +3,7 @@ package com.rensq.ordero.api.item;
 import java.math.BigDecimal;
 
 public class ItemDto {
-    private Integer id;
+    private String id;
     private String name;
     private String description;
     private BigDecimal price;
@@ -15,7 +15,7 @@ public class ItemDto {
         return new ItemDto();
     }
 
-    public ItemDto withID(Integer id) {
+    public ItemDto withID(String id) {
         this.id = id;
         return this;
     }
@@ -40,7 +40,7 @@ public class ItemDto {
         return this;
     }
 
-    public Integer getId() {
+    public String  getId() {
         return id;
     }
 

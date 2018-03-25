@@ -5,6 +5,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -19,7 +20,7 @@ public class ItemMapperTest {
     @Test
     public void toDto_givenItem_thenMapAllFieldsToItemDto() {
         Item item = Item.ItemBuilder.item()
-                .withID(1)
+                .withID(UUID.randomUUID())
                 .withName("Toy")
                 .withDescription("A big toy")
                 .withPrice(new BigDecimal(13))
@@ -28,7 +29,7 @@ public class ItemMapperTest {
 
         ItemDto itemDto = itemMapper.toDto(item);
 
-        assertThat(itemDto).isEqualToComparingFieldByField(item);
+        assertThat(itemDto).isEqualToIgnoringGivenFields(item, "id");
     }
 
     @Test

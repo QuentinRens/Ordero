@@ -2,9 +2,10 @@ package com.rensq.ordero.domain.item;
 
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 public class Item {
-    private Integer id;
+    private UUID id;
     private String name;
     private String description;
     private BigDecimal price;
@@ -13,7 +14,7 @@ public class Item {
     private Item() {
     }
 
-    public void setId(Integer id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
@@ -33,7 +34,7 @@ public class Item {
         this.amount = amount;
     }
 
-    public Integer getId() {
+    public UUID getId() {
         return id;
     }
 
@@ -54,7 +55,7 @@ public class Item {
     }
 
     public static class ItemBuilder {
-        private Integer id;
+        private UUID id;
         private String name;
         private String description;
         private BigDecimal price;
@@ -77,7 +78,7 @@ public class Item {
             return item;
         }
 
-        public ItemBuilder withID(Integer id) {
+        public ItemBuilder withID(UUID id) {
             this.id = id;
             return this;
         }
