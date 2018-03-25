@@ -27,6 +27,6 @@ public class OrderCreationController {
     @ResponseStatus (HttpStatus.CREATED)
     public OrderDto makeOrder(@RequestBody OrderDto orderDto){
         System.out.println(orderDto.getCustomerID());
-        return orderMapper.toDto(orderService.createOrder(orderMapper.toDomain(orderDto), orderDto.getCustomerID()));
+        return orderMapper.toDto(orderService.createOrder(orderMapper.toDomain(orderDto), UUID.fromString(orderDto.getCustomerID())));
     }
 }

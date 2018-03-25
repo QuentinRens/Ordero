@@ -8,14 +8,14 @@ import java.util.List;
 import java.util.UUID;
 
 public class Order {
-    private Integer id;
+    private UUID id;
     private List<ItemGroup> itemGroups;
     private UUID customerId;
     private BigDecimal price;
 
     private Order(){}
 
-    public Integer getId() {
+    public UUID getId() {
         return id;
     }
 
@@ -31,7 +31,7 @@ public class Order {
         return price;
     }
 
-    public void setId(Integer id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
@@ -48,7 +48,7 @@ public class Order {
     }
 
     public static class OrderBuilder{
-        private Integer id;
+        private UUID id;
         private List<ItemGroup> itemGroups;
         private UUID customerId;
         private BigDecimal price;
@@ -69,7 +69,7 @@ public class Order {
             return order;
         }
 
-        public OrderBuilder withId(Integer id){
+        public OrderBuilder withId(UUID id){
             this.id = id;
             return this;
         }

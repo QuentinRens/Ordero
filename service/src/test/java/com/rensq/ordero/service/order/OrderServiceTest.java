@@ -70,9 +70,9 @@ public class OrderServiceTest {
     public void getOrderReport_HappyPath(){
         UUID customerID = UUID.randomUUID();
 
-        Order order1 = Order.OrderBuilder.order().withCustomerId(customerID).withId(1).withPrice(new BigDecimal(1)).build();
-        Order order2 = Order.OrderBuilder.order().withCustomerId(customerID).withId(2).withPrice(new BigDecimal(1)).build();
-        Order order3 = Order.OrderBuilder.order().withCustomerId(customerID).withId(3).withPrice(new BigDecimal(1)).build();
+        Order order1 = Order.OrderBuilder.order().withCustomerId(customerID).withId(UUID.randomUUID()).withPrice(new BigDecimal(1)).build();
+        Order order2 = Order.OrderBuilder.order().withCustomerId(customerID).withId(UUID.randomUUID()).withPrice(new BigDecimal(1)).build();
+        Order order3 = Order.OrderBuilder.order().withCustomerId(customerID).withId(UUID.randomUUID()).withPrice(new BigDecimal(1)).build();
 
         List <Order> orders = new ArrayList<>();
         orders.add(order1);
@@ -83,8 +83,8 @@ public class OrderServiceTest {
 
         OrderReport actualReport = orderService.getOrderReport(customerID.toString());
 
-        Assertions.assertThat(actualReport.getOrders().keySet()).containsExactly(1,2,3);
-        Assertions.assertThat(actualReport.getOrders().values()).containsExactly (order1, order2, order3);
+        Assertions.assertThat(actualReport.getOrders().keySet().size()).isEqualTo(3);
+        Assertions.assertThat(actualReport.getOrders().values()).containsExactlyInAnyOrder (order1, order2, order3);
         Assertions.assertThat(actualReport.getTotalPrice().intValue()).isEqualTo(3);
 
 

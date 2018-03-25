@@ -59,10 +59,10 @@ public class OrderCreationControllerIntegrationTest {
 
         OrderDto actualOrderDto = new TestRestTemplate()
                 .postForObject(String.format("http://localhost:%s/%s", port, "order_creation"),
-                        OrderDto.orderDto().withItemGroup(itemGroupDtoss).withCustomerID(storedCustomer.getId()), OrderDto.class);
+                        OrderDto.orderDto().withItemGroup(itemGroupDtoss).withCustomerID(storedCustomer.getId().toString()), OrderDto.class);
 
-        Assertions.assertThat(actualOrderDto.getId()).isEqualTo(1);
-        Assertions.assertThat(actualOrderDto.getCustomerID()).isEqualTo(storedCustomer.getId());
+        Assertions.assertThat(actualOrderDto.getId()).isNotNull();
+        Assertions.assertThat(actualOrderDto.getCustomerID()).isEqualTo(storedCustomer.getId().toString());
         Assertions.assertThat(actualOrderDto.getPrice()).isPositive();
         Assertions.assertThat(actualOrderDto.getItemGroupDtos().size()).isEqualTo(2);
         Assertions.assertThat(actualOrderDto.getItemGroupDtos().get(0)).isEqualToIgnoringGivenFields(itemGroupDto1,"price", "shippingDate");

@@ -9,6 +9,7 @@ import com.rensq.ordero.domain.order.Order;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Named
@@ -24,7 +25,7 @@ public class OrderMapper {
         List<ItemGroupDto> itemGroupDtos = order.getItemGroups().stream()
                 .map(itemGroup -> itemGroupMapper.toDto(itemGroup))
                 .collect(Collectors.toList());
-        return OrderDto.orderDto().withId(order.getId()).withItemGroup(itemGroupDtos).withCustomerID(order.getCustomerId()).withPrice(order.getPrice().intValue());
+        return OrderDto.orderDto().withId(order.getId().toString()).withItemGroup(itemGroupDtos).withCustomerID(order.getCustomerId().toString()).withPrice(order.getPrice().intValue());
     }
 
     Order toDomain (OrderDto orderDto){
@@ -34,7 +35,7 @@ public class OrderMapper {
 
         return Order.OrderBuilder.order()
                 .withItemGroups(itemGroups)
-                .withCustomerId(orderDto.getCustomerID())
+                .withCustomerId(UUID.fromString(orderDto.getCustomerID()))
                 .build();
     }
 }

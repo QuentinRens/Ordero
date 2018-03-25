@@ -6,8 +6,7 @@ import java.util.stream.Collectors;
 
 @Named
 public class OrderRepository {
-    private Map<Integer, Order> orders;
-    private static int databaseIndex = 0;
+    private Map<UUID, Order> orders;
 
     public OrderRepository(){
         orders = new HashMap<>();
@@ -24,7 +23,7 @@ public class OrderRepository {
     }
 
     public Order storeOrder(Order order){
-        order.setId(++databaseIndex);
+        order.setId(UUID.randomUUID());
         orders.put(order.getId(), order);
         return order;
     }

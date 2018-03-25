@@ -15,6 +15,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = OrderoRunner.class)
@@ -39,9 +40,9 @@ public class OrderReportMapperTest {
         List<ItemGroup> itemGroups = new ArrayList<>();
         itemGroups.add(itemGroup1);
 
-        Order order1 = Order.OrderBuilder.order().withId(1).withPrice(new BigDecimal(1)).withItemGroups(itemGroups).build();
-        Order order2 = Order.OrderBuilder.order().withId(2).withPrice(new BigDecimal(1)).withItemGroups(itemGroups).build();
-        Order order3 = Order.OrderBuilder.order().withId(3).withPrice(new BigDecimal(1)).withItemGroups(itemGroups).build();
+        Order order1 = Order.OrderBuilder.order().withId(UUID.randomUUID()).withCustomerId(UUID.randomUUID()).withPrice(new BigDecimal(1)).withItemGroups(itemGroups).build();
+        Order order2 = Order.OrderBuilder.order().withId(UUID.randomUUID()).withCustomerId(UUID.randomUUID()).withPrice(new BigDecimal(1)).withItemGroups(itemGroups).build();
+        Order order3 = Order.OrderBuilder.order().withId(UUID.randomUUID()).withCustomerId(UUID.randomUUID()).withPrice(new BigDecimal(1)).withItemGroups(itemGroups).build();
 
         List<Order> orders = new ArrayList<>();
         orders.add(order1);
@@ -52,7 +53,7 @@ public class OrderReportMapperTest {
 
         OrderReportDto actualReport = orderReportMapper.toDto(report);
 
-        Assertions.assertThat(actualReport.getOrders().keySet()).containsExactly(1,2,3);
+        Assertions.assertThat(actualReport.getOrders().keySet().size()).isEqualTo(3);
         Assertions.assertThat(actualReport.getTotalPrice().intValue()).isEqualTo(3);
 
 

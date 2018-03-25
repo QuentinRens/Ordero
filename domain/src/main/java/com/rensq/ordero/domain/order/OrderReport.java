@@ -4,15 +4,16 @@ import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class OrderReport {
-    private Map<Integer, Order> orders;
+    private Map<UUID, Order> orders;
     private BigDecimal totalPrice;
 
     private OrderReport(){}
 
-    public Map<Integer, Order> getOrders() {
+    public Map<UUID, Order> getOrders() {
         return orders;
     }
 
@@ -20,7 +21,7 @@ public class OrderReport {
         return totalPrice;
     }
 
-    public void setOrders(Map<Integer, Order> orders) {
+    public void setOrders(Map<UUID, Order> orders) {
         this.orders = orders;
     }
 
@@ -29,7 +30,7 @@ public class OrderReport {
     }
 
     public static class OrderReportBuilder{
-        private Map<Integer, Order> orders;
+        private Map<UUID, Order> orders;
         private BigDecimal totalPrice;
 
         private OrderReportBuilder(){}
@@ -46,7 +47,7 @@ public class OrderReport {
         }
 
         public OrderReportBuilder withOrders(List<Order> orders){
-            Map<Integer, Order> ordersMap = new HashMap<>();
+            Map<UUID, Order> ordersMap = new HashMap<>();
             for (int i = 0; i < orders.size(); i++){
                 ordersMap.put(orders.get(i).getId(), orders.get(i));
             }

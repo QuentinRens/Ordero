@@ -20,6 +20,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = OrderoRunner.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -49,9 +50,9 @@ public class OrderReportControllerIntegrationTest {
         List<ItemGroup> itemGroups = new ArrayList<>();
         itemGroups.add(itemGroup1);
 
-        Order order1 = Order.OrderBuilder.order().withId(1).withCustomerId(storedCustomer.getId()).withPrice(new BigDecimal(1)).withItemGroups(itemGroups).build();
-        Order order2 = Order.OrderBuilder.order().withId(2).withCustomerId(storedCustomer.getId()).withPrice(new BigDecimal(1)).withItemGroups(itemGroups).build();
-        Order order3 = Order.OrderBuilder.order().withId(3).withCustomerId(storedCustomer.getId()).withPrice(new BigDecimal(1)).withItemGroups(itemGroups).build();
+        Order order1 = Order.OrderBuilder.order().withCustomerId(storedCustomer.getId()).withPrice(new BigDecimal(1)).withItemGroups(itemGroups).build();
+        Order order2 = Order.OrderBuilder.order().withCustomerId(storedCustomer.getId()).withPrice(new BigDecimal(1)).withItemGroups(itemGroups).build();
+        Order order3 = Order.OrderBuilder.order().withCustomerId(storedCustomer.getId()).withPrice(new BigDecimal(1)).withItemGroups(itemGroups).build();
 
         orderRepository.storeOrder(order1);
         orderRepository.storeOrder(order2);

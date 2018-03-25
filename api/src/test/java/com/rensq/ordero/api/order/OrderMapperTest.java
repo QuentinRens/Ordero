@@ -53,7 +53,7 @@ public class OrderMapperTest {
         itemGroups.add(itemGroup1);
         itemGroups.add(itemGroup2);
 
-        Order givenOrder = Order.OrderBuilder.order().withId(1).withItemGroups(itemGroups).withCustomerId(UUID.randomUUID()).withPrice(new BigDecimal(20)).build();
+        Order givenOrder = Order.OrderBuilder.order().withId(UUID.randomUUID()).withItemGroups(itemGroups).withCustomerId(UUID.randomUUID()).withPrice(new BigDecimal(20)).build();
 
         OrderDto orderDto = orderMapper.toDto(givenOrder);
 
@@ -78,7 +78,7 @@ public class OrderMapperTest {
         itemGroupDtoss.add(itemGroupDto1);
         itemGroupDtoss.add(itemGroupDto2);
 
-        OrderDto givenOrderDto = OrderDto.orderDto().withItemGroup(itemGroupDtoss).withCustomerID(UUID.randomUUID());
+        OrderDto givenOrderDto = OrderDto.orderDto().withItemGroup(itemGroupDtoss).withCustomerID(UUID.randomUUID().toString());
 
         Order actualOrder = orderMapper.toDomain(givenOrderDto);
 

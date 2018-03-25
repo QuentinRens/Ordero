@@ -8,9 +8,9 @@ import java.util.List;
 import java.util.UUID;
 
 public class OrderDto {
-    private Integer id;
+    private String id;
     private List<ItemGroupDto> itemGroupDtos ;
-    private UUID customerID;
+    private String customerID;
     private Integer price;
 
     private OrderDto(){}
@@ -19,7 +19,7 @@ public class OrderDto {
         return new OrderDto();
     }
 
-    public OrderDto withId (Integer id){
+    public OrderDto withId (String id){
         this.id = id;
         return this;
     }
@@ -29,7 +29,7 @@ public class OrderDto {
         return this;
     }
 
-    public OrderDto withCustomerID (UUID customerID){
+    public OrderDto withCustomerID (String customerID){
         this.customerID = customerID;
         return this;
     }
@@ -39,7 +39,7 @@ public class OrderDto {
         return this;
     }
 
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
@@ -47,7 +47,7 @@ public class OrderDto {
         return itemGroupDtos;
     }
 
-    public UUID getCustomerID() {
+    public String getCustomerID() {
         return customerID;
     }
 

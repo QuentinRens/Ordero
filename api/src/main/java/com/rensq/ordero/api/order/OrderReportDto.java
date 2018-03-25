@@ -3,7 +3,7 @@ package com.rensq.ordero.api.order;
 import java.util.Map;
 
 public class OrderReportDto {
-    private Map<Integer, OrderDto> orders;
+    private Map<String, OrderDto> orders;
     private Integer totalPrice;
 
     private OrderReportDto(){}
@@ -12,7 +12,7 @@ public class OrderReportDto {
         return new OrderReportDto();
     }
 
-    public OrderReportDto withOrders (Map<Integer, OrderDto> orders){
+    public OrderReportDto withOrders (Map<String, OrderDto> orders){
         this.orders = orders;
         return this;
     }
@@ -22,7 +22,7 @@ public class OrderReportDto {
         return this;
     }
 
-    public Map<Integer, OrderDto> getOrders() {
+    public Map<String, OrderDto> getOrders() {
         return orders;
     }
 

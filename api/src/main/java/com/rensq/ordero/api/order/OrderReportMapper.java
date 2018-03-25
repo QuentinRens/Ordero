@@ -7,6 +7,7 @@ import javax.inject.Named;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Named
@@ -22,7 +23,7 @@ public class OrderReportMapper {
         List<OrderDto> orderDtos = orderReport.getOrders().values().stream()
                 .map(order -> orderMapper.toDto(order))
                 .collect(Collectors.toList());
-        Map<Integer, OrderDto> orders = new HashMap<>();
+        Map<String, OrderDto> orders = new HashMap<>();
         for (int i = 0; i < orderDtos.size(); i++){
             orders.put(orderDtos.get(i).getId(), orderDtos.get(i));
         }
