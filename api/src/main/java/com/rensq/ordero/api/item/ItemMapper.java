@@ -1,8 +1,10 @@
 package com.rensq.ordero.api.item;
 
 import com.rensq.ordero.domain.item.Item;
+import com.rensq.ordero.domain.item.StockResupplyUrgency;
 
 import javax.inject.Named;
+import java.time.format.DateTimeFormatter;
 
 @Named
 public class ItemMapper {
@@ -13,7 +15,9 @@ public class ItemMapper {
                 .withName(item.getName())
                 .withDescription(item.getDescription())
                 .withPrice(item.getPrice())
-                .withAmount(item.getAmount());
+                .withAmount(item.getAmount())
+                .withLastOrdered(item.getLastOrdered() == null? null : item.getLastOrdered().format(DateTimeFormatter.ISO_DATE))
+                .withStockResupplyUrgency(item.getStockResupplyUrgency());
     }
 
     Item toDomain (ItemDto itemDto){

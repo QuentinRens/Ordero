@@ -3,12 +3,15 @@ package com.rensq.ordero.service.item;
 
 import com.rensq.ordero.domain.item.Item;
 import com.rensq.ordero.domain.item.ItemRepository;
+import com.rensq.ordero.domain.item.StockResupplyUrgency;
+import com.rensq.ordero.service.exceptions.EmptyFieldException;
 import com.rensq.ordero.service.exceptions.EmptyResourceException;
 import com.rensq.ordero.service.exceptions.ItemCreationException;
 import com.rensq.ordero.service.exceptions.UnknownResourceException;
 
 import javax.inject.Inject;
 import javax.inject.Named;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -35,13 +38,9 @@ public class ItemService {
     public Item createItem(Item providedItem) {
         assertItemNameIsFree(providedItem);
         assertPriceIsNotNull(providedItem);
+        assertAmountIsNotNull(providedItem);
+        setStockResupplyUrgency(providedItem);
         return itemRepository.storeItem(providedItem);
-    }
-
-    private void assertPriceIsNotNull(Item providedItem) {
-        if (providedItem.getPrice() == null){
-            throw new IllegalArgumentException();
-        }
     }
 
     public Item updateItem(String itemId, Item updatedItem) {
@@ -51,9 +50,38 @@ public class ItemService {
         fillForEmptyDescription(itemIDasUUID, updatedItem);
         fillForEmptyPrice(itemIDasUUID, updatedItem);
         fillForEmptyAmount(itemIDasUUID, updatedItem);
+        updatedItem.setLastOrdered(itemRepository.getItem(itemIDasUUID).getLastOrdered());
         updatedItem.setId(itemIDasUUID);
+        setStockResupplyUrgency(updatedItem);
         return itemRepository.updateItem(updatedItem);
     }
+
+    private void assertAmountIsNotNull(Item providedItem) {
+        if (providedItem.getAmount() == null){
+            throw new EmptyFieldException();
+        }
+    }
+
+    private void setStockResupplyUrgency(Item providedItem) {
+        if(providedItem.getAmount() < 3){
+            providedItem.setStockResupplyUrgency(StockResupplyUrgency.STOCK_LOW);
+        } else if (providedItem.getAmount() < 10){
+            if (providedItem.getAmount() < 5 && providedItem.getLastOrdered() != null && providedItem.getLastOrdered().plusDays(8).isAfter(LocalDate.now())){
+                providedItem.setStockResupplyUrgency(StockResupplyUrgency.STOCK_LOW);
+            }else{
+                providedItem.setStockResupplyUrgency(StockResupplyUrgency.STOCK_MEDIUM);
+            }
+        } else{
+            providedItem.setStockResupplyUrgency(StockResupplyUrgency.STOCK_HIGH);
+        }
+    }
+
+    private void assertPriceIsNotNull(Item providedItem) {
+        if (providedItem.getPrice() == null){
+            throw new IllegalArgumentException();
+        }
+    }
+
 
     private void fillForEmptyAmount(UUID itemId, Item updatedItem) {
         if (updatedItem.getName() == null) {

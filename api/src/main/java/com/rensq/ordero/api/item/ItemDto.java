@@ -1,5 +1,7 @@
 package com.rensq.ordero.api.item;
 
+import com.rensq.ordero.domain.item.StockResupplyUrgency;
+
 import java.math.BigDecimal;
 
 public class ItemDto {
@@ -8,6 +10,8 @@ public class ItemDto {
     private String description;
     private BigDecimal price;
     private Integer amount;
+    private String lastOrdered;
+    private StockResupplyUrgency stockResupplyUrgency;
 
     private ItemDto(){}
 
@@ -40,6 +44,15 @@ public class ItemDto {
         return this;
     }
 
+    public  ItemDto withLastOrdered (String lastOrdered){
+        this.lastOrdered = lastOrdered;
+        return this;
+    }
+    public  ItemDto withStockResupplyUrgency (StockResupplyUrgency stockResupplyUrgency){
+        this.stockResupplyUrgency = stockResupplyUrgency;
+        return this;
+    }
+
     public String  getId() {
         return id;
     }
@@ -58,5 +71,13 @@ public class ItemDto {
 
     public Integer getAmount() {
         return amount;
+    }
+
+    public String getLastOrdered() {
+        return lastOrdered;
+    }
+
+    public StockResupplyUrgency getStockResupplyUrgency() {
+        return stockResupplyUrgency;
     }
 }

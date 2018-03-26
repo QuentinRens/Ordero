@@ -2,6 +2,7 @@ package com.rensq.ordero.service.item;
 
 import com.rensq.ordero.domain.item.Item;
 import com.rensq.ordero.domain.item.ItemRepository;
+import com.rensq.ordero.domain.item.StockResupplyUrgency;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,6 +13,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.mockito.verification.VerificationMode;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -40,6 +42,7 @@ public class ItemServiceTest {
                 .withDescription(providedItem.getDescription())
                 .withPrice(providedItem.getPrice())
                 .withAmount(providedItem.getAmount())
+                .withStockResupplyUrgency(StockResupplyUrgency.STOCK_HIGH)
                 .build();
 
         Mockito.when(itemRepository.storeItem(providedItem)).thenReturn(expectedItem);
@@ -55,7 +58,8 @@ public class ItemServiceTest {
                 .withName("Toy")
                 .withDescription("A big toy")
                 .withPrice(new BigDecimal(13))
-                .withAmount(10)
+                .withAmount(4)
+                .withLastOrdered(LocalDate.now().minusDays(3))
                 .build();
 
         String givenID = UUID.randomUUID().toString();
@@ -68,6 +72,7 @@ public class ItemServiceTest {
                 .withDescription(providedItem.getDescription())
                 .withPrice(providedItem.getPrice())
                 .withAmount(providedItem.getAmount())
+                .withStockResupplyUrgency(StockResupplyUrgency.STOCK_LOW)
                 .build();
 
         Mockito.when(itemRepository.getItem(expectedID)).thenReturn(Item.ItemBuilder.item().withID(expectedID).build());

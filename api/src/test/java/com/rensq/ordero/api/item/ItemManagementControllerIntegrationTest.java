@@ -3,6 +3,7 @@ package com.rensq.ordero.api.item;
 import com.rensq.ordero.api.OrderoRunner;
 import com.rensq.ordero.domain.item.Item;
 import com.rensq.ordero.domain.item.ItemRepository;
+import com.rensq.ordero.domain.item.StockResupplyUrgency;
 import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,6 +15,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.inject.Inject;
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
 @RunWith(SpringRunner.class)
@@ -47,6 +50,8 @@ public class ItemManagementControllerIntegrationTest {
         Assertions.assertThat(itemDto.getDescription()).isEqualTo("A big toy");
         Assertions.assertThat(itemDto.getPrice()).isEqualByComparingTo(new BigDecimal(13));
         Assertions.assertThat(itemDto.getAmount()).isEqualTo(10);
+        Assertions.assertThat(itemDto.getLastOrdered()).isEqualTo(null);
+        Assertions.assertThat(itemDto.getStockResupplyUrgency()).isEqualTo(StockResupplyUrgency.STOCK_HIGH);
     }
 
     @Test
@@ -56,19 +61,23 @@ public class ItemManagementControllerIntegrationTest {
                 .withDescription("A big toy")
                 .withPrice(new BigDecimal(15))
                 .withAmount(10)
+                .withLastOrdered(LocalDate.now())
+                .withStockResupplyUrgency(StockResupplyUrgency.STOCK_HIGH)
                 .build());
 
         new TestRestTemplate().put(String.format("http://localhost:%s/%s/%s", port, "Item", item.getId().toString()),
                         ItemDto.itemDto()
                                 .withName("Toy")
                                 .withPrice(new BigDecimal(13))
-                                .withAmount(10)
+                                .withAmount(4)
                         , ItemDto.class);
 
         Assertions.assertThat(itemRepository.getItem(item.getId())).isEqualToIgnoringGivenFields(ItemDto.itemDto()
                 .withName("Toy")
                 .withDescription("A big toy")
                 .withPrice(new BigDecimal(13))
-                .withAmount(10), "id");
+                .withAmount(4), "id", "lastOrdered", "stockResupplyUrgency");
+
+        Assertions.assertThat(itemRepository.getItem(item.getId()).getStockResupplyUrgency()).isEqualTo(StockResupplyUrgency.STOCK_LOW);
     }
 }
