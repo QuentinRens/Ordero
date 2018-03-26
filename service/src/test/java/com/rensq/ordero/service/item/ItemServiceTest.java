@@ -105,4 +105,15 @@ public class ItemServiceTest {
 
         Mockito.calls(2);
     }
+
+    @Test
+    public void getItemByStockResupplyUrgency(){
+        List<Item> expectedList = new ArrayList<>();
+        expectedList.add(Item.ItemBuilder.item().withName("Banana").withLastOrdered(LocalDate.now()).withAmount(7).withStockResupplyUrgency(StockResupplyUrgency.STOCK_MEDIUM).build());
+        Mockito.when(itemRepository.getItemByStockResupplyUrgency()).thenReturn(expectedList);
+
+        ItemService.getItemByStockResupplyUrgency();
+
+        Mockito.verify(itemRepository).getItemByStockResupplyUrgency();
+    }
 }

@@ -17,6 +17,7 @@ import javax.inject.Inject;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.UUID;
 
 @RunWith(SpringRunner.class)
@@ -79,5 +80,43 @@ public class ItemManagementControllerIntegrationTest {
                 .withAmount(4), "id", "lastOrdered", "stockResupplyUrgency");
 
         Assertions.assertThat(itemRepository.getItem(item.getId()).getStockResupplyUrgency()).isEqualTo(StockResupplyUrgency.STOCK_LOW);
+    }
+
+    @Test
+    public void getItemByStockResupplyUrgency(){
+        Item item1 = itemRepository.storeItem(Item.ItemBuilder.item()
+                .withName("Toytoytoy")
+                .withDescription("A big toy")
+                .withPrice(new BigDecimal(15))
+                .withAmount(10)
+                .withLastOrdered(LocalDate.now())
+                .withStockResupplyUrgency(StockResupplyUrgency.STOCK_HIGH)
+                .build());
+
+        Item item2 = itemRepository.storeItem(Item.ItemBuilder.item()
+                .withName("Toytoytoy")
+                .withDescription("A big toy")
+                .withPrice(new BigDecimal(15))
+                .withAmount(10)
+                .withLastOrdered(LocalDate.now())
+                .withStockResupplyUrgency(StockResupplyUrgency.STOCK_MEDIUM)
+                .build());
+
+        Item item3 = itemRepository.storeItem(Item.ItemBuilder.item()
+                .withName("Tututu")
+                .withDescription("A big toy")
+                .withPrice(new BigDecimal(15))
+                .withAmount(10)
+                .withLastOrdered(LocalDate.now())
+                .withStockResupplyUrgency(StockResupplyUrgency.STOCK_LOW)
+                .build());
+
+        ItemDto[] itemDto = new TestRestTemplate()
+                .getForObject((String.format("http://localhost:%s/%s", port, "Item")), ItemDto[].class);
+
+        Assertions.assertThat(itemDto).hasSize(2);
+        Assertions.assertThat(itemDto[0].getName()).isEqualTo("Tututu");
+        Assertions.assertThat(itemDto[1].getName()).isEqualTo("Toytoytoy");
+
     }
 }

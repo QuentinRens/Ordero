@@ -23,6 +23,12 @@ public class ItemRepository {
                 .orElse(null);
     }
 
+    public List <Item> getItemByStockResupplyUrgency(){
+        return items.values().stream()
+                .filter(item -> item.getStockResupplyUrgency() == StockResupplyUrgency.STOCK_LOW || item.getStockResupplyUrgency() == StockResupplyUrgency.STOCK_MEDIUM).sorted()
+                .collect(Collectors.toList());
+    }
+
     public List<Item> getItems(){
         return Collections.unmodifiableList(new ArrayList<>(items.values()));
     }

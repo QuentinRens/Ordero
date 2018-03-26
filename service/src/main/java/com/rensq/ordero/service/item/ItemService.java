@@ -35,6 +35,10 @@ public class ItemService {
         return itemRepository.getItemNames();
     }
 
+    public List <Item> getItemByStockResupplyUrgency(){
+        return itemRepository.getItemByStockResupplyUrgency();
+    }
+
     public Item createItem(Item providedItem) {
         assertItemNameIsFree(providedItem);
         assertPriceIsNotNull(providedItem);
