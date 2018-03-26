@@ -6,6 +6,7 @@ import com.rensq.ordero.service.exceptions.UnknownResourceException;
 
 import javax.inject.Inject;
 import javax.inject.Named;
+import java.util.List;
 import java.util.UUID;
 
 @Named
@@ -24,6 +25,10 @@ public class CustomerService {
     public Customer getCustomer (UUID customerID){
         assertCustomerExist(customerID);
         return customerRepository.getCustomer(customerID);
+    }
+
+    public List<Customer> getAllCustomers(){
+        return customerRepository.getAllCustomers();
     }
 
     public void assertCustomerExist(UUID customerID) {

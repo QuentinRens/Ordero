@@ -1,9 +1,7 @@
 package com.rensq.ordero.domain.customer;
 
 import javax.inject.Named;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 @Named
 public class CustomerRepository {
@@ -21,5 +19,9 @@ public class CustomerRepository {
 
     public Customer getCustomer (UUID id){
         return customers.get(id);
+    }
+
+    public List<Customer> getAllCustomers(){
+        return Collections.unmodifiableList(new ArrayList<>(customers.values()));
     }
 }

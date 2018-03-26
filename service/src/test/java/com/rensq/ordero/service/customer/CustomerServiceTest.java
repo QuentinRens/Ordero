@@ -58,4 +58,11 @@ public class CustomerServiceTest {
 
         Mockito.calls(2);
     }
+
+    @Test
+    public void getAllCustomers(){
+        CustomerService.getAllCustomers();
+
+        Mockito.verify(CustomerRepository).getAllCustomers();
+    }
 }
