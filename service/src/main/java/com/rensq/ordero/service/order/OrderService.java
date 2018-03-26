@@ -41,9 +41,32 @@ public class OrderService {
         assertGroupsReferToExistingItems(order);
         setShippingDatesForItems(order);
         setPricesForItemGroups(order);
+        setDescriptionForItemGroup(order);
         setOrderPrice(order);
         order.setCustomerId(customerService.getCustomer(providedCustomerId).getId());
+        updateItems(order);
         return orderRepository.storeOrder(order);
+    }
+
+    private void updateItems(Order order) {
+        List<Item> orderedItems = order.getItemGroups().stream()
+                .map(itemGroup -> itemGroup.getName())
+                .map(s -> itemService.getItemByName(s)).collect(Collectors.toList());
+        for (Item item : orderedItems){
+           ItemGroup correspondingItemGroup = order.getItemGroups().stream()
+                   .filter(itemGroup -> itemGroup.getName() == item.getName())
+                   .findFirst()
+                   .orElse(null);
+           if (correspondingItemGroup != null){
+               if (correspondingItemGroup.getAmount() > item.getAmount()){
+                   item.setAmount(0);
+               } else {
+                   item.setAmount(item.getAmount() - correspondingItemGroup.getAmount());
+               }
+           }
+           item.setLastOrdered(LocalDate.now());
+           itemService.updateItem(item.getId().toString(), item);
+        }
     }
 
     public OrderReport getOrderReport(String customerId){
@@ -117,5 +140,14 @@ public class OrderService {
             }else{
                 itemGroup.setShippingDate(LocalDate.now().plusWeeks(1));
             }
+    }
+
+    private void setDescriptionForItemGroup(Order order) {
+        List<Item> orderedItems = order.getItemGroups().stream()
+                .map(itemGroup -> itemGroup.getName())
+                .map(s -> itemService.getItemByName(s)).collect(Collectors.toList());
+        for (ItemGroup itemGroup :order.getItemGroups()){
+            itemGroup.setDescription(itemService.getItemByName(itemGroup.getName()).getDescription());
+        }
     }
 }

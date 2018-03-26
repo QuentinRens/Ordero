@@ -52,16 +52,31 @@ public class OrderServiceTest {
         UUID givenCustomerID = UUID.randomUUID();
         Customer expectedCustomer = Customer.CustomerBuilder.customer().withID(givenCustomerID).build();
 
+        UUID id1 = UUID.randomUUID();
+        UUID id2 = UUID.randomUUID();
+        UUID id3 = UUID.randomUUID();
+
+        Item item1 = Item.ItemBuilder.item().withAmount(1).withPrice(new BigDecimal(1)).withDescription("TOYTOY").withName("Toy").withID(id1).build();
+        Item item2 = Item.ItemBuilder.item().withAmount(1).withPrice(new BigDecimal(1)).withDescription("TOYTOY").withName("Machine").withID(id2).build();
+        Item item3 = Item.ItemBuilder.item().withAmount(1).withPrice(new BigDecimal(1)).withDescription("TOYTOY").withName("Bike").withID(id3).build();
+
+
         Mockito.when(itemService.getItemNames()).thenReturn(listOfNamesInRepo);
-        Mockito.when(itemService.getItemByName(Mockito.anyString())).thenReturn(Item.ItemBuilder.item().withAmount(1).withPrice(new BigDecimal(1)).build());
+        Mockito.when(itemService.getItemByName("Toy")).thenReturn(item1);
+        Mockito.when(itemService.getItemByName("Machine")).thenReturn(item2);
+        Mockito.when(itemService.getItemByName("Bike")).thenReturn(item3);
         Mockito.when(orderRepository.storeOrder(givenOrder)).thenReturn(givenOrder);
         Mockito.when(customerService.getCustomer(givenCustomerID)).thenReturn(expectedCustomer);
+        Mockito.when(itemService.updateItem(id1.toString(), item1)).thenReturn(item1);
+        Mockito.when(itemService.updateItem(id2.toString(), item2)).thenReturn(item2);
+        Mockito.when(itemService.updateItem(id3.toString(), item3)).thenReturn(item3);
 
 
         Order actualOrder = orderService.createOrder(givenOrder, givenCustomerID );
 
         Assertions.assertThat(actualOrder.getItemGroups().get(1).getPrice()).isPositive();
         Assertions.assertThat(actualOrder.getItemGroups().get(1).getShippingDate()).isBetween(LocalDate.now(), LocalDate.now().plusDays(2));
+        Assertions.assertThat(actualOrder.getItemGroups().get(1).getDescription()).isEqualTo("TOYTOY");
         Assertions.assertThat(actualOrder.getCustomerId()).isEqualTo(givenCustomerID);
         Assertions.assertThat(actualOrder.getPrice().intValue()).isEqualTo(7);
     }

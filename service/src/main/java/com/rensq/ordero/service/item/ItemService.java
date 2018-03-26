@@ -39,8 +39,15 @@ public class ItemService {
         assertItemNameIsFree(providedItem);
         assertPriceIsNotNull(providedItem);
         assertAmountIsNotNull(providedItem);
+        assertDescriptionIsNotNull(providedItem);
         setStockResupplyUrgency(providedItem);
         return itemRepository.storeItem(providedItem);
+    }
+
+    private void assertDescriptionIsNotNull(Item providedItem) {
+        if (providedItem.getDescription() == null){
+            throw new EmptyFieldException();
+        }
     }
 
     public Item updateItem(String itemId, Item updatedItem) {

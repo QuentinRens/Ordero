@@ -32,6 +32,6 @@ public class ItemRepositoryTest {
 
         List<String> actualItems = itemRepository.getItemNames();
 
-        Assertions.assertThat(actualItems).containsExactly("Marcus", "Marcos");
+        Assertions.assertThat(actualItems).containsExactlyInAnyOrder("Marcus", "Marcos");
     }
 }
