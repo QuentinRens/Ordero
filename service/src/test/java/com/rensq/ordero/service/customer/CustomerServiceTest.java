@@ -1,7 +1,7 @@
 package com.rensq.ordero.service.customer;
 
 import com.rensq.ordero.domain.customer.Customer;
-import com.rensq.ordero.domain.customer.CustomerAdress;
+import com.rensq.ordero.domain.customer.CustomerAddress;
 import com.rensq.ordero.domain.customer.CustomerRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
@@ -29,7 +29,7 @@ public class CustomerServiceTest {
                 .withLastName("Marc")
                 .withEmail("jeanmarc@hotmail.com")
                 .withPhoneNumber("071/21/98/99")
-                .withCustomerAdress(CustomerAdress.CustomerAdressBuilder.customerAdress().build())
+                .withCustomerAddress(CustomerAddress.CustomerAddressBuilder.customerAddress().build())
                 .build();
 
         Customer expectedCustomer = Customer.CustomerBuilder.customer()
@@ -38,7 +38,7 @@ public class CustomerServiceTest {
                 .withLastName(providedCustomer.getLastName())
                 .withEmail(providedCustomer.getEmail())
                 .withPhoneNumber(providedCustomer.getPhoneNumber())
-                .withCustomerAdress(providedCustomer.getCustomerAdress())
+                .withCustomerAddress(providedCustomer.getCustomerAddress())
                 .build();
 
         Mockito.when(CustomerRepository.storeCustomer(providedCustomer)).thenReturn(expectedCustomer);

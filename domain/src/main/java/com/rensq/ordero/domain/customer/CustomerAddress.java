@@ -1,12 +1,12 @@
 package com.rensq.ordero.domain.customer;
 
-public class CustomerAdress {
+public class CustomerAddress {
     private String streetName;
     private String streetNumber;
     private String postalCode;
     private String city;
 
-    private CustomerAdress(){}
+    private CustomerAddress(){}
 
     public void setStreetName(String streetName) {
         this.streetName = streetName;
@@ -40,43 +40,43 @@ public class CustomerAdress {
         return city;
     }
 
-    public static class CustomerAdressBuilder{
+    public static class CustomerAddressBuilder{
         private String streetName;
         private String streetNumber;
         private String postalCode;
         private String city;
 
-        private CustomerAdressBuilder(){}
+        private CustomerAddressBuilder(){}
 
-        public static CustomerAdressBuilder customerAdress(){
-            return new CustomerAdressBuilder();
+        public static CustomerAddressBuilder customerAddress(){
+            return new CustomerAddressBuilder();
         }
 
-        public CustomerAdress build(){
-            CustomerAdress customerAdress = new CustomerAdress();
-            customerAdress.setCity(city);
-            customerAdress.setPostalCode(postalCode);
-            customerAdress.setStreetName(streetName);
-            customerAdress.setStreetNumber(streetNumber);
-            return  customerAdress;
+        public CustomerAddress build(){
+            CustomerAddress customerAddress = new CustomerAddress();
+            customerAddress.setCity(city);
+            customerAddress.setPostalCode(postalCode);
+            customerAddress.setStreetName(streetName);
+            customerAddress.setStreetNumber(streetNumber);
+            return  customerAddress;
         }
 
-        public CustomerAdressBuilder withStreetName(String streetName){
+        public CustomerAddressBuilder withStreetName(String streetName){
             this.streetName = streetName;
             return this;
         }
 
-        public CustomerAdressBuilder withStreetNumber(String streetNumber){
+        public CustomerAddressBuilder withStreetNumber(String streetNumber){
             this.streetNumber = streetNumber;
             return this;
         }
 
-        public CustomerAdressBuilder withPostalCode(String postalCode){
+        public CustomerAddressBuilder withPostalCode(String postalCode){
             this.postalCode = postalCode;
             return this;
         }
 
-        public CustomerAdressBuilder withCity(String city) {
+        public CustomerAddressBuilder withCity(String city) {
             this.city = city;
             return this;
         }

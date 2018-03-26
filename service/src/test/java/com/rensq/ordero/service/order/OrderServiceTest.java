@@ -19,9 +19,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class OrderServiceTest {
@@ -123,5 +121,15 @@ public class OrderServiceTest {
         Order actualOrder = orderService.makeReorder(givenOrderId, givenCustomerId);
 
         Assertions.assertThat(actualOrder).isEqualToIgnoringGivenFields(expectedOrder);
+    }
+
+    @Test
+    public void getOrderWithItemGroupsToBeShippedToday(){
+        Map<Order, List<ItemGroup>> expectedMap = new HashMap<>();
+        Mockito.when(orderRepository.getOrderWithItemGroupsToBeShippedToday()).thenReturn(expectedMap);
+
+        orderService.getOrderWithItemGroupsToBeShippedToday();
+
+        Mockito.verify(orderRepository).getOrderWithItemGroupsToBeShippedToday();
     }
 }

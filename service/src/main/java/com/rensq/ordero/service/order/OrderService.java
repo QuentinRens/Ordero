@@ -18,6 +18,7 @@ import javax.inject.Named;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -34,12 +35,24 @@ public class OrderService {
         this.customerService = customerService;
     }
 
+    public Order getOrder (UUID orderId){
+        assertOrderExistForId(orderId);
+        return orderRepository.getOrder(orderId);
+    }
+
+    private void assertOrderExistForId(UUID orderId) {
+        if (orderRepository.getOrder(orderId) == null){
+            throw new UnknownResourceException("ID", Order.class.getSimpleName());
+        }
+    }
+
     public Order createOrder(Order order, UUID providedCustomerId){
         assertItemGroupIsNotEmpty(order);
         assertItemGroupsHaveName(order);
         assertNoAmountIsNull(order);
         assertGroupsReferToExistingItems(order);
         setShippingDatesForItems(order);
+        setShippingAddressForItems(order, providedCustomerId);
         setPricesForItemGroups(order);
         setDescriptionForItemGroup(order);
         setOrderPrice(order);
@@ -47,6 +60,7 @@ public class OrderService {
         updateItems(order);
         return orderRepository.storeOrder(order);
     }
+
 
     public Order makeReorder(String orderId, String customerId){
         assertOrdersExistForCustomerId(customerId);
@@ -59,6 +73,9 @@ public class OrderService {
         return orderRepository.storeOrder(reorder);
     }
 
+    public Map<Order, List<ItemGroup>> getOrderWithItemGroupsToBeShippedToday(){
+        return orderRepository.getOrderWithItemGroupsToBeShippedToday();
+    }
     private void assertOrderIdIsValid(String orderId, List<Order> customerOrders) {
         if (orderId == null){
             throw new EmptyFieldException();
@@ -142,6 +159,12 @@ public class OrderService {
             }else{
                 itemGroup.setShippingDate(LocalDate.now().plusWeeks(1));
             }
+    }
+
+    private void setShippingAddressForItems(Order order, UUID providedCustomerId) {
+        for (ItemGroup itemGroup :order.getItemGroups()) {
+            itemGroup.setShippingAddress(customerService.getCustomer(providedCustomerId).getCustomerAddress());
+        }
     }
 
     private void setDescriptionForItemGroup(Order order) {

@@ -8,7 +8,7 @@ public class Customer {
     private String lastName;
     private String email;
     private String phoneNumber;
-    private CustomerAdress customerAdress;
+    private CustomerAddress customerAdress;
 
     private Customer(){}
 
@@ -32,7 +32,7 @@ public class Customer {
         this.phoneNumber = phoneNumber;
     }
 
-    public void setCustomerAdress(CustomerAdress customerAdress) {
+    public void setCustomerAddress(CustomerAddress customerAdress) {
         this.customerAdress = customerAdress;
     }
 
@@ -56,7 +56,7 @@ public class Customer {
         return phoneNumber;
     }
 
-    public CustomerAdress getCustomerAdress() {
+    public CustomerAddress getCustomerAddress() {
         return customerAdress;
     }
 
@@ -66,7 +66,7 @@ public class Customer {
         private String lastName;
         private String email;
         private String phoneNumber;
-        private CustomerAdress customerAdress;
+        private CustomerAddress customerAddress;
 
         private CustomerBuilder(){}
 
@@ -81,7 +81,7 @@ public class Customer {
             customer.setLastName(lastName);
             customer.setEmail(email);
             customer.setPhoneNumber(phoneNumber);
-            customer.setCustomerAdress(customerAdress);
+            customer.setCustomerAddress(customerAddress);
             return customer;
         }
 
@@ -110,8 +110,8 @@ public class Customer {
             return this;
         }
 
-        public  CustomerBuilder withCustomerAdress (CustomerAdress customerAdress){
-            this.customerAdress = customerAdress;
+        public  CustomerBuilder withCustomerAddress (CustomerAddress customerAdress){
+            this.customerAddress = customerAdress;
             return this;
         }
     }

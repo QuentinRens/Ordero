@@ -3,6 +3,7 @@ package com.rensq.ordero.api.order;
 
 import com.rensq.ordero.api.OrderoRunner;
 import com.rensq.ordero.domain.customer.Customer;
+import com.rensq.ordero.domain.customer.CustomerAddress;
 import com.rensq.ordero.domain.customer.CustomerRepository;
 import com.rensq.ordero.domain.item.ItemGroup;
 import com.rensq.ordero.domain.order.Order;
@@ -45,6 +46,8 @@ public class OrderReportControllerIntegrationTest {
                 .withPrice(new BigDecimal(13))
                 .withAmount(10)
                 .withShippingDate(LocalDate.now())
+                .withShippingAddress(CustomerAddress.CustomerAddressBuilder.customerAddress().build())
+                .withOrderId(UUID.randomUUID())
                 .build();
 
         List<ItemGroup> itemGroups = new ArrayList<>();

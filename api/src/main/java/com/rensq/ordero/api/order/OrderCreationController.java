@@ -32,7 +32,6 @@ public class OrderCreationController {
     @PostMapping (path = "/{orderId}/{customerId}", produces = APPLICATION_JSON_VALUE)
     @ResponseStatus (HttpStatus.CREATED)
     public OrderDto makeReorder(@PathVariable ("orderId") String orderId, @PathVariable ("customerId") String customerId ){
-        System.out.println("YEAAAAAAAH!");
         return orderMapper.toDto(orderService.makeReorder(orderId, customerId));
     }
 }

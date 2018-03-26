@@ -3,6 +3,7 @@ package com.rensq.ordero.api.order;
 import com.rensq.ordero.api.OrderoRunner;
 import com.rensq.ordero.api.item.ItemGroupDto;
 import com.rensq.ordero.domain.customer.Customer;
+import com.rensq.ordero.domain.customer.CustomerAddress;
 import com.rensq.ordero.domain.customer.CustomerRepository;
 import com.rensq.ordero.domain.item.Item;
 import com.rensq.ordero.domain.item.ItemGroup;
@@ -47,7 +48,14 @@ public class OrderCreationControllerIntegrationTest {
 
     @Test
     public void makeOrder(){
-        Customer storedCustomer = Customer.CustomerBuilder.customer().withFirstName("Arnold").build();
+        CustomerAddress address = CustomerAddress.CustomerAddressBuilder.customerAddress()
+                .withStreetName("Saint-Feuillen")
+                .withStreetNumber("3")
+                .withCity("Charleroi")
+                .withPostalCode("6120")
+                .build();
+
+        Customer storedCustomer = Customer.CustomerBuilder.customer().withFirstName("Arnold").withCustomerAddress(address).build();
         customerRepository.storeCustomer(storedCustomer);
 
         itemRepository.storeItem(Item.ItemBuilder.item().withName("Toy").withDescription("A big toy").withAmount(6).withPrice(new BigDecimal(20)).build());
@@ -77,8 +85,8 @@ public class OrderCreationControllerIntegrationTest {
         Assertions.assertThat(actualOrderDto.getCustomerID()).isEqualTo(storedCustomer.getId().toString());
         Assertions.assertThat(actualOrderDto.getPrice()).isPositive();
         Assertions.assertThat(actualOrderDto.getItemGroupDtos().size()).isEqualTo(2);
-        Assertions.assertThat(actualOrderDto.getItemGroupDtos().get(0)).isEqualToIgnoringGivenFields(itemGroupDto1,"price", "shippingDate", "description");
-        Assertions.assertThat(actualOrderDto.getItemGroupDtos().get(1)).isEqualToIgnoringGivenFields(itemGroupDto2,"price", "shippingDate", "description");
+        Assertions.assertThat(actualOrderDto.getItemGroupDtos().get(0)).isEqualToIgnoringGivenFields(itemGroupDto1,"price", "shippingDate", "description", "shippingAddress", "orderId");
+        Assertions.assertThat(actualOrderDto.getItemGroupDtos().get(1)).isEqualToIgnoringGivenFields(itemGroupDto2,"price", "shippingDate", "description", "shippingAddress", "orderId");
         Assertions.assertThat(actualOrderDto.getItemGroupDtos().get(0).getDescription()).isEqualTo("A big toy");
         Assertions.assertThat(actualOrderDto.getItemGroupDtos().get(1).getDescription()).isEqualTo("A big bike");
         Assertions.assertThat(actualOrderDto.getItemGroupDtos().get(1).getPrice()).isPositive();
@@ -88,7 +96,14 @@ public class OrderCreationControllerIntegrationTest {
 
     @Test
     public void makeReorder(){
-        Customer storedCustomer = customerRepository.storeCustomer(Customer.CustomerBuilder.customer().withFirstName("Arnold").build());
+        CustomerAddress address = CustomerAddress.CustomerAddressBuilder.customerAddress()
+                .withStreetName("Saint-Feuillen")
+                .withStreetNumber("3")
+                .withCity("Charleroi")
+                .withPostalCode("6120")
+                .build();
+
+        Customer storedCustomer = customerRepository.storeCustomer(Customer.CustomerBuilder.customer().withFirstName("Arnold").withCustomerAddress(address).build());
 
         itemRepository.storeItem(Item.ItemBuilder.item().withName("Toy").withDescription("A big toy").withAmount(6).withPrice(new BigDecimal(20)).build());
 

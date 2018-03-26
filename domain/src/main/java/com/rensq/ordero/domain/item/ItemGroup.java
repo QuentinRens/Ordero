@@ -1,7 +1,10 @@
 package com.rensq.ordero.domain.item;
 
+import com.rensq.ordero.domain.customer.CustomerAddress;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.UUID;
 
 public class ItemGroup {
     private String name;
@@ -9,6 +12,8 @@ public class ItemGroup {
     private BigDecimal price;
     private Integer amount;
     private LocalDate shippingDate;
+    private CustomerAddress shippingAddress;
+    private UUID orderId;
 
     private ItemGroup() {
     }
@@ -33,6 +38,14 @@ public class ItemGroup {
         this.amount = amount;
     }
 
+    public void setOrderId(UUID orderId) {
+        this.orderId = orderId;
+    }
+
+    public void setShippingAddress(CustomerAddress shippingAddress) {
+        this.shippingAddress = shippingAddress;
+    }
+
     public LocalDate getShippingDate() {
         return shippingDate;
     }
@@ -53,12 +66,22 @@ public class ItemGroup {
         return amount;
     }
 
+    public UUID getOrderId() {
+        return orderId;
+    }
+
+    public CustomerAddress getShippingAddress() {
+        return shippingAddress;
+    }
+
     public static class ItemGroupBuilder {
         private String name;
         private String description;
         private BigDecimal price;
         private Integer amount;
         private LocalDate shippingDate;
+        private CustomerAddress shippingAddress;
+        private UUID orderId;
 
         private ItemGroupBuilder() {
         }
@@ -74,6 +97,8 @@ public class ItemGroup {
             itemGroup.setPrice(price);
             itemGroup.setAmount(amount);
             itemGroup.setShippingDate(shippingDate);
+            itemGroup.setShippingAddress(shippingAddress);
+            itemGroup.setOrderId(orderId);
             return itemGroup;
         }
 
@@ -99,6 +124,16 @@ public class ItemGroup {
 
         public ItemGroupBuilder withShippingDate (LocalDate shippingDate){
             this.shippingDate = shippingDate;
+            return this;
+        }
+
+        public ItemGroupBuilder withShippingAddress (CustomerAddress shippingAddress){
+            this.shippingAddress = shippingAddress;
+            return this;
+        }
+
+        public  ItemGroupBuilder withOrderId (UUID orderId){
+            this.orderId = orderId;
             return this;
         }
     }

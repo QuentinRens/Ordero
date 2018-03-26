@@ -1,7 +1,7 @@
 package com.rensq.ordero.api.customer;
 
 import com.rensq.ordero.domain.customer.Customer;
-import com.rensq.ordero.domain.customer.CustomerAdress;
+import com.rensq.ordero.domain.customer.CustomerAddress;
 
 import javax.inject.Named;
 
@@ -15,10 +15,10 @@ public class CustomerMapper {
                 .withLastName(customer.getLastName())
                 .withEmail(customer.getEmail())
                 .withPhoneNumber(customer.getPhoneNumber())
-                .withCity(customer.getCustomerAdress().getCity())
-                .withPostalCode(customer.getCustomerAdress().getPostalCode())
-                .withStreetNumber(customer.getCustomerAdress().getStreetNumber())
-                .withStreetName(customer.getCustomerAdress().getStreetName());
+                .withCity(customer.getCustomerAddress().getCity())
+                .withPostalCode(customer.getCustomerAddress().getPostalCode())
+                .withStreetNumber(customer.getCustomerAddress().getStreetNumber())
+                .withStreetName(customer.getCustomerAddress().getStreetName());
     }
 
     Customer toDomain (CustomerDto customerDto){
@@ -27,7 +27,7 @@ public class CustomerMapper {
                 .withLastName(customerDto.getLastName())
                 .withEmail(customerDto.getEmail())
                 .withPhoneNumber(customerDto.getPhoneNumber())
-                .withCustomerAdress(CustomerAdress.CustomerAdressBuilder.customerAdress()
+                .withCustomerAddress(CustomerAddress.CustomerAddressBuilder.customerAddress()
                         .withCity(customerDto.getCity())
                         .withPostalCode(customerDto.getPostalCode())
                         .withStreetNumber(customerDto.getStreetNumber())

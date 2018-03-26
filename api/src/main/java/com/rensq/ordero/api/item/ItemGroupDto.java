@@ -1,11 +1,16 @@
 package com.rensq.ordero.api.item;
 
+import com.rensq.ordero.api.customer.CustomerAddressDto;
+
 public class ItemGroupDto {
     private String name;
     private String description;
     private Integer price;
     private Integer amount;
     private String shippingDate;
+    private CustomerAddressDto shippingAddress;
+    private String orderId;
+
 
     private ItemGroupDto(){}
 
@@ -38,6 +43,16 @@ public class ItemGroupDto {
         return this;
     }
 
+    public ItemGroupDto withShippingAddress (CustomerAddressDto shippingAddress){
+        this.shippingAddress = shippingAddress;
+        return this;
+    }
+
+    public ItemGroupDto withOrderId (String orderId){
+        this.orderId = orderId;
+        return this;
+    }
+
     public String getName() {
         return name;
     }
@@ -56,5 +71,13 @@ public class ItemGroupDto {
 
     public String getShippingDate() {
         return shippingDate;
+    }
+
+    public CustomerAddressDto getShippingAddress() {
+        return shippingAddress;
+    }
+
+    public String getOrderId() {
+        return orderId;
     }
 }

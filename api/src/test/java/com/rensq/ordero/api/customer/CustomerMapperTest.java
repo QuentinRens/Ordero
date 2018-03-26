@@ -1,7 +1,7 @@
 package com.rensq.ordero.api.customer;
 
 import com.rensq.ordero.domain.customer.Customer;
-import com.rensq.ordero.domain.customer.CustomerAdress;
+import com.rensq.ordero.domain.customer.CustomerAddress;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -25,7 +25,7 @@ public class CustomerMapperTest {
                 .withLastName("Rens")
                 .withEmail("rensquentin@hotmail.com")
                 .withPhoneNumber("071/21/54/87")
-                .withCustomerAdress(CustomerAdress.CustomerAdressBuilder.customerAdress()
+                .withCustomerAddress(CustomerAddress.CustomerAddressBuilder.customerAddress()
                         .withStreetName("Saint-Feuillen")
                         .withStreetNumber("3")
                         .withCity("Charleroi")
@@ -36,7 +36,7 @@ public class CustomerMapperTest {
         CustomerDto customerDto = customerMapper.toDto(customer);
 
         assertThat(customerDto).isEqualToComparingOnlyGivenFields(customer, "id", "firstName", "lastName", "email", "phoneNumber");
-        assertThat(customerDto).isEqualToComparingOnlyGivenFields(customer.getCustomerAdress(), "streetName", "streetNumber", "postalCode", "city");
+        assertThat(customerDto).isEqualToComparingOnlyGivenFields(customer.getCustomerAddress(), "streetName", "streetNumber", "postalCode", "city");
     }
 
     @Test
@@ -54,6 +54,6 @@ public class CustomerMapperTest {
         Customer customer = customerMapper.toDomain(customerDto);
 
         assertThat(customer).isEqualToComparingOnlyGivenFields(customerDto, "firstName", "lastName", "email", "phoneNumber");
-        assertThat(customer.getCustomerAdress()).isEqualToComparingOnlyGivenFields(customerDto, "streetName", "streetNumber", "postalCode", "city");
+        assertThat(customer.getCustomerAddress()).isEqualToComparingOnlyGivenFields(customerDto, "streetName", "streetNumber", "postalCode", "city");
     }
 }

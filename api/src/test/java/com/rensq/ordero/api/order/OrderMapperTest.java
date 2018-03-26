@@ -3,6 +3,7 @@ package com.rensq.ordero.api.order;
 import com.rensq.ordero.api.OrderoRunner;
 import com.rensq.ordero.api.item.ItemGroupDto;
 import com.rensq.ordero.api.item.ItemGroupMapper;
+import com.rensq.ordero.domain.customer.CustomerAddress;
 import com.rensq.ordero.domain.item.ItemGroup;
 import com.rensq.ordero.domain.order.Order;
 import org.assertj.core.api.Assertions;
@@ -36,6 +37,8 @@ public class OrderMapperTest {
                 .withPrice(new BigDecimal(13))
                 .withAmount(10)
                 .withShippingDate(LocalDate.now())
+                .withShippingAddress(CustomerAddress.CustomerAddressBuilder.customerAddress().build())
+                .withOrderId(UUID.randomUUID())
                 .build();
 
         ItemGroup itemGroup2 = ItemGroup.ItemGroupBuilder.itemGroup()
@@ -44,6 +47,8 @@ public class OrderMapperTest {
                 .withPrice(new BigDecimal(13))
                 .withAmount(10)
                 .withShippingDate(LocalDate.now())
+                .withShippingAddress(CustomerAddress.CustomerAddressBuilder.customerAddress().build())
+                .withOrderId(UUID.randomUUID())
                 .build();
 
         ItemGroupDto itemGroupDto1 = itemGroupMapper.toDto(itemGroup1);
@@ -57,8 +62,8 @@ public class OrderMapperTest {
 
         OrderDto orderDto = orderMapper.toDto(givenOrder);
 
-        Assertions.assertThat(orderDto.getItemGroupDtos().get(0)).isEqualToIgnoringGivenFields(itemGroup1, "shippingDate", "price");
-        Assertions.assertThat(orderDto.getItemGroupDtos().get(1)).isEqualToIgnoringGivenFields(itemGroup2, "shippingDate", "price");
+        Assertions.assertThat(orderDto.getItemGroupDtos().get(0)).isEqualToIgnoringGivenFields(itemGroup1, "shippingDate", "price", "shippingAddress", "orderId");
+        Assertions.assertThat(orderDto.getItemGroupDtos().get(1)).isEqualToIgnoringGivenFields(itemGroup2, "shippingDate", "price", "shippingAddress", "orderId");
         Assertions.assertThat(orderDto.getPrice().intValue()).isEqualTo(20);
     }
 
@@ -82,8 +87,8 @@ public class OrderMapperTest {
 
         Order actualOrder = orderMapper.toDomain(givenOrderDto);
 
-        Assertions.assertThat(actualOrder.getItemGroups().get(0)).isEqualToComparingFieldByField(itemGroupDto1);
-        Assertions.assertThat(actualOrder.getItemGroups().get(1)).isEqualToComparingFieldByField(itemGroupDto2);
+        Assertions.assertThat(actualOrder.getItemGroups().get(0)).isEqualToIgnoringGivenFields(itemGroupDto1, "orderId", "shippingAddress");
+        Assertions.assertThat(actualOrder.getItemGroups().get(1)).isEqualToIgnoringGivenFields(itemGroupDto2, "orderId", "shippingAddress");
     }
 
 
