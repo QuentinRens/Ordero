@@ -48,24 +48,26 @@ public class OrderService {
         return orderRepository.storeOrder(order);
     }
 
-    private void updateItems(Order order) {
-        List<Item> orderedItems = order.getItemGroups().stream()
-                .map(itemGroup -> itemGroup.getName())
-                .map(s -> itemService.getItemByName(s)).collect(Collectors.toList());
-        for (Item item : orderedItems){
-           ItemGroup correspondingItemGroup = order.getItemGroups().stream()
-                   .filter(itemGroup -> itemGroup.getName() == item.getName())
-                   .findFirst()
-                   .orElse(null);
-           if (correspondingItemGroup != null){
-               if (correspondingItemGroup.getAmount() > item.getAmount()){
-                   item.setAmount(0);
-               } else {
-                   item.setAmount(item.getAmount() - correspondingItemGroup.getAmount());
-               }
-           }
-           item.setLastOrdered(LocalDate.now());
-           itemService.updateItem(item.getId().toString(), item);
+    public Order makeReorder(String orderId, String customerId){
+        assertOrdersExistForCustomerId(customerId);
+        List<Order> customerOrders = orderRepository.getOrderByCustomerId(UUID.fromString(customerId));
+        assertOrderIdIsValid(orderId, customerOrders);
+        Order reorder = customerOrders.stream().
+                filter(order -> order.getId().equals(UUID.fromString(orderId)))
+                .findFirst()
+                .orElse(null);
+        return orderRepository.storeOrder(reorder);
+    }
+
+    private void assertOrderIdIsValid(String orderId, List<Order> customerOrders) {
+        if (orderId == null){
+            throw new EmptyFieldException();
+        }
+        if (customerOrders.stream().
+                filter(order -> order.getId().equals(UUID.fromString(orderId)))
+                .findFirst()
+                .orElse(null) == null){
+            throw new UnknownResourceException("ID", Order.class.getSimpleName());
         }
     }
 
@@ -148,6 +150,28 @@ public class OrderService {
                 .map(s -> itemService.getItemByName(s)).collect(Collectors.toList());
         for (ItemGroup itemGroup :order.getItemGroups()){
             itemGroup.setDescription(itemService.getItemByName(itemGroup.getName()).getDescription());
+        }
+    }
+
+
+    private void updateItems(Order order) {
+        List<Item> orderedItems = order.getItemGroups().stream()
+                .map(itemGroup -> itemGroup.getName())
+                .map(s -> itemService.getItemByName(s)).collect(Collectors.toList());
+        for (Item item : orderedItems){
+            ItemGroup correspondingItemGroup = order.getItemGroups().stream()
+                    .filter(itemGroup -> itemGroup.getName() == item.getName())
+                    .findFirst()
+                    .orElse(null);
+            if (correspondingItemGroup != null){
+                if (correspondingItemGroup.getAmount() > item.getAmount()){
+                    item.setAmount(0);
+                } else {
+                    item.setAmount(item.getAmount() - correspondingItemGroup.getAmount());
+                }
+            }
+            item.setLastOrdered(LocalDate.now());
+            itemService.updateItem(item.getId().toString(), item);
         }
     }
 }

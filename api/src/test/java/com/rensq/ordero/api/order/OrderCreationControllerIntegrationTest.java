@@ -5,8 +5,12 @@ import com.rensq.ordero.api.item.ItemGroupDto;
 import com.rensq.ordero.domain.customer.Customer;
 import com.rensq.ordero.domain.customer.CustomerRepository;
 import com.rensq.ordero.domain.item.Item;
+import com.rensq.ordero.domain.item.ItemGroup;
 import com.rensq.ordero.domain.item.ItemRepository;
+import com.rensq.ordero.domain.order.Order;
+import com.rensq.ordero.service.order.OrderService;
 import org.assertj.core.api.Assertions;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -32,6 +36,14 @@ public class OrderCreationControllerIntegrationTest {
 
     @Inject
     private CustomerRepository customerRepository;
+
+    @Inject
+    private OrderService orderService;
+
+    @Before
+    public void emptyRepository(){
+        itemRepository.clear();
+    }
 
     @Test
     public void makeOrder(){
@@ -72,6 +84,35 @@ public class OrderCreationControllerIntegrationTest {
         Assertions.assertThat(actualOrderDto.getItemGroupDtos().get(1).getPrice()).isPositive();
         Assertions.assertThat(LocalDate.parse(actualOrderDto.getItemGroupDtos().get(0).getShippingDate())).isBefore(LocalDate.now().plusDays(2));
         Assertions.assertThat(LocalDate.parse(actualOrderDto.getItemGroupDtos().get(1).getShippingDate())).isAfter(LocalDate.now().plusDays(2));
+    }
+
+    @Test
+    public void makeReorder(){
+        Customer storedCustomer = customerRepository.storeCustomer(Customer.CustomerBuilder.customer().withFirstName("Arnold").build());
+
+        itemRepository.storeItem(Item.ItemBuilder.item().withName("Toy").withDescription("A big toy").withAmount(6).withPrice(new BigDecimal(20)).build());
+
+        ItemGroup itemGroup1 = ItemGroup.ItemGroupBuilder.itemGroup()
+                .withName("Toy")
+                .withAmount(10)
+                .build();
+
+        List<ItemGroup> itemGroups = new ArrayList<>();
+        itemGroups.add(itemGroup1);
+
+        Order order1 = orderService.createOrder(Order.OrderBuilder.order().withItemGroups(itemGroups).build(), storedCustomer.getId());
+
+
+
+        OrderDto actualOrderDto = new TestRestTemplate()
+                .postForObject(String.format("http://localhost:%s/%s/%s/%s", port, "order_creation", order1.getId().toString(), storedCustomer.getId().toString()),
+                        null,  OrderDto.class,
+                        order1.getId().toString(),
+                        order1.getCustomerId().toString());
+
+        Assertions.assertThat(actualOrderDto.getId()).isNotEqualTo(order1.getId());
+        Assertions.assertThat(actualOrderDto.getCustomerID()).isEqualTo(storedCustomer.getId().toString());
+        Assertions.assertThat(actualOrderDto.getPrice()).isEqualTo(order1.getPrice().intValue());
     }
 
 

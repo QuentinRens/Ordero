@@ -12,7 +12,7 @@ public class OrderRepository {
         orders = new HashMap<>();
     }
 
-    public Order getOrder (int id){
+    public Order getOrder (UUID id){
         return orders.get(id);
     }
 

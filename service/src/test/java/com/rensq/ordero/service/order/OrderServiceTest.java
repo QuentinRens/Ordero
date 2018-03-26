@@ -104,4 +104,24 @@ public class OrderServiceTest {
 
 
     }
+
+    @Test
+    public void makeReorder_HappyPath(){
+        String givenOrderId = UUID.randomUUID().toString();
+        String givenCustomerId = UUID.randomUUID().toString();
+        UUID newOrderId = UUID.randomUUID();
+
+        Order order1 = Order.OrderBuilder.order().withCustomerId(UUID.fromString(givenCustomerId)).withId(UUID.fromString(givenOrderId)).withPrice(new BigDecimal(1)).build();
+        Order expectedOrder = Order.OrderBuilder.order().withCustomerId(order1.getCustomerId()).withId(newOrderId).withPrice(order1.getPrice()).build();
+
+        List <Order> orders = new ArrayList<>();
+        orders.add(order1);
+
+        Mockito.when(orderRepository.getOrderByCustomerId(UUID.fromString(givenCustomerId))).thenReturn(orders);
+        Mockito.when(orderRepository.storeOrder(order1)).thenReturn(expectedOrder);
+
+        Order actualOrder = orderService.makeReorder(givenOrderId, givenCustomerId);
+
+        Assertions.assertThat(actualOrder).isEqualToIgnoringGivenFields(expectedOrder);
+    }
 }

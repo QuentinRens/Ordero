@@ -26,7 +26,13 @@ public class OrderCreationController {
     @PostMapping (consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     @ResponseStatus (HttpStatus.CREATED)
     public OrderDto makeOrder(@RequestBody OrderDto orderDto){
-        System.out.println(orderDto.getCustomerID());
         return orderMapper.toDto(orderService.createOrder(orderMapper.toDomain(orderDto), UUID.fromString(orderDto.getCustomerID())));
+    }
+
+    @PostMapping (path = "/{orderId}/{customerId}", produces = APPLICATION_JSON_VALUE)
+    @ResponseStatus (HttpStatus.CREATED)
+    public OrderDto makeReorder(@PathVariable ("orderId") String orderId, @PathVariable ("customerId") String customerId ){
+        System.out.println("YEAAAAAAAH!");
+        return orderMapper.toDto(orderService.makeReorder(orderId, customerId));
     }
 }
