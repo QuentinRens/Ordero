@@ -180,7 +180,8 @@ public class OrderService {
     private void updateItems(Order order) {
         List<Item> orderedItems = order.getItemGroups().stream()
                 .map(itemGroup -> itemGroup.getName())
-                .map(s -> itemService.getItemByName(s)).collect(Collectors.toList());
+                .map(s -> itemService.getItemByName(s))
+                .collect(Collectors.toList());
         for (Item item : orderedItems){
             ItemGroup correspondingItemGroup = order.getItemGroups().stream()
                     .filter(itemGroup -> itemGroup.getName() == item.getName())

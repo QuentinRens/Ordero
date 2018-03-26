@@ -24,4 +24,8 @@ public class CustomerRepository {
     public List<Customer> getAllCustomers(){
         return Collections.unmodifiableList(new ArrayList<>(customers.values()));
     }
+
+    public void clear(){
+        customers.clear();
+    }
 }
